@@ -1,0 +1,1 @@
+cockroach workload init movr
