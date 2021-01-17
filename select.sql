@@ -1,6 +1,6 @@
 SHOW TABLES FROM movr;
 
-SHOW COLUMNS FROM movr.rides;
+SHOW COLUMNS FROM movr.users;
 
 SELECT * FROM movr.users LIMIT 5;
 
@@ -37,3 +37,9 @@ SELECT MIN(start_time), MAX(end_time) FROM movr.rides;
 SELECT MAX(end_time) - MIN(start_time) AS interval FROM movr.rides;
 
 SELECT SUM(revenue)/COUNT(revenue) as average, AVG(revenue) FROM movr.rides;
+
+SELECT * FROM movr.users WHERE name LIKE '%er';
+
+SELECT * FROM movr.users WHERE name LIKE '_a%';
+
+SELECT * FROM movr.users WHERE name LIKE '_a_%';
