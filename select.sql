@@ -2,6 +2,10 @@ SHOW TABLES FROM movr;
 
 SHOW COLUMNS FROM movr.users;
 
+SHOW COLUMNS FROM movr.vehicles;
+
+SHOW COLUMNS FROM movr.rides;
+
 SELECT * FROM movr.users LIMIT 5;
 
 SELECT city FROM movr.users LIMIT 5;
@@ -43,3 +47,24 @@ SELECT * FROM movr.users WHERE name LIKE '%er';
 SELECT * FROM movr.users WHERE name LIKE '_a%';
 
 SELECT * FROM movr.users WHERE name LIKE '_a_%';
+
+SELECT * FROM movr.users WHERE id IN (SELECT owner_id FROM movr.vehicles WHERE city = 'boston');
+
+SELECT AVG(revenue) AS "Revenue Average" FROM movr.rides;
+
+SELECT id, city AS "Rider Cities" FROM movr.rides LIMIT 5;
+
+SELECT CONCAT(name, ' lives in ' , city)  AS  "User Info" FROM movr.users;
+
+SELECT u.id, v.type FROM movr.users AS u, movr.vehicles as v WHERE u.id = v.owner_id;
+
+SELECT COUNT(*) FROM movr.vehicles AS v INNER JOIN movr.users AS u ON v.owner_id = u.id
+LEFT OUTER JOIN movr.rides AS r ON v.id = r.vehicle_id;
+
+SELECT COUNT(v.id), COUNT(r.id), COUNT(u.id) FROM movr.vehicles AS v, movr.rides AS r, movr.users AS u;
+
+SELECT * FROM movr.vehicles AS v FULL OUTER JOIN movr.users AS u ON v.owner_id = u.id;
+
+SELECT * FROM movr.vehicles AS v RIGHT OUTER JOIN movr.users AS u ON v.owner_id = u.id;
+
+
