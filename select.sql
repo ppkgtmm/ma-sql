@@ -4,6 +4,8 @@ SHOW COLUMNS FROM movr.users;
 
 SHOW COLUMNS FROM movr.vehicles;
 
+SHOW COLUMNS FROM movr.user_promo_codes;
+
 SHOW COLUMNS FROM movr.rides;
 
 SELECT * FROM movr.users LIMIT 5;
@@ -67,4 +69,25 @@ SELECT * FROM movr.vehicles AS v FULL OUTER JOIN movr.users AS u ON v.owner_id =
 
 SELECT * FROM movr.vehicles AS v RIGHT OUTER JOIN movr.users AS u ON v.owner_id = u.id;
 
+SELECT * FROM movr.vehicles AS v, movr.rides AS r, movr.users AS u LIMIT 5;
+
+SELECT 'User City' AS Type, city FROM movr.users
+UNION
+SELECT 'Vehicle City', city FROM movr.vehicles;
+
+
+SELECT city FROM movr.users
+UNION ALL
+SELECT city FROM movr.vehicles WHERE city  = 'boston';
+
+SELECT rider_id, vehicle_id, city, SUM(revenue) FROM movr.rides
+WHERE city = 'amsterdam' GROUP BY rider_id, vehicle_id, city;
+
+SELECT u.id, u.name, ROUND(AVG(r.revenue),2) AS AVG_Revenue FROM movr.users AS u 
+INNER JOIN movr.rides AS r
+ON u.id = r.rider_id
+WHERE r.city = 'new york'
+GROUP BY u.id, u.name
+HAVING u.name LIKE '%a%' AND  ROUND(AVG(r.revenue),2) > 50
+ORDER BY AVG_Revenue ASC;
 
