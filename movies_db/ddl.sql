@@ -16,5 +16,13 @@ SHOW COLUMNS FROM movies;
 ALTER TABLE movies
 ALTER COLUMN id SET DEFAULT gen_random_uuid();
 
+CREATE INDEX ON movies (title);
+
+ALTER TABLE movies
+ADD CONSTRAINT unicon UNIQUE (title);
+
+ALTER TABLE movies
+ALTER COLUMN title SET NOT NULL;
+
 SHOW COLUMNS FROM movies;
 
