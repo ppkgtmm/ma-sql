@@ -120,7 +120,7 @@ ORDER BY (
     END
 );
 
-SELECT v.*, COALESCE(r.revenue) AS revenue
+SELECT v.*, COALESCE(r.revenue,0.00) AS revenue
 FROM movr.vehicles AS v LEFT OUTER JOIN movr.rides AS r
-ON r.rider_id = v.id
+ON r.vehicle_id = v.id
 WHERE v.city = 'amsterdam';
