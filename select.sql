@@ -58,19 +58,6 @@ SELECT id, city AS "Rider Cities" FROM movr.rides LIMIT 5;
 
 SELECT CONCAT(name, ' lives in ' , city)  AS  "User Info" FROM movr.users;
 
-SELECT u.id, v.type FROM movr.users AS u, movr.vehicles as v WHERE u.id = v.owner_id;
-
-SELECT COUNT(*) FROM movr.vehicles AS v INNER JOIN movr.users AS u ON v.owner_id = u.id
-LEFT OUTER JOIN movr.rides AS r ON v.id = r.vehicle_id;
-
-SELECT COUNT(v.id), COUNT(r.id), COUNT(u.id) FROM movr.vehicles AS v, movr.rides AS r, movr.users AS u;
-
-SELECT * FROM movr.vehicles AS v FULL OUTER JOIN movr.users AS u ON v.owner_id = u.id;
-
-SELECT * FROM movr.vehicles AS v RIGHT OUTER JOIN movr.users AS u ON v.owner_id = u.id;
-
-SELECT * FROM movr.vehicles AS v, movr.rides AS r, movr.users AS u LIMIT 5;
-
 SELECT 'User City' AS Type, city FROM movr.users
 UNION
 SELECT 'Vehicle City', city FROM movr.vehicles;
@@ -80,45 +67,11 @@ SELECT city FROM movr.users
 UNION ALL
 SELECT city FROM movr.vehicles WHERE city  = 'boston';
 
-SELECT rider_id, vehicle_id, city, SUM(revenue) FROM movr.rides
-WHERE city = 'amsterdam' GROUP BY rider_id, vehicle_id, city;
-
-SELECT u.id, u.name, ROUND(AVG(r.revenue),2) AS AVG_Revenue FROM movr.users AS u 
-INNER JOIN movr.rides AS r
-ON u.id = r.rider_id
-WHERE r.city = 'new york'
-GROUP BY u.id, u.name
-HAVING u.name LIKE '%a%' AND  ROUND(AVG(r.revenue),2) > 50
-ORDER BY AVG_Revenue ASC;
-
-
 SELECT u.* FROM movr.users AS u WHERE EXISTS
 (SELECT r.rider_id  FROM movr.rides AS r WHERE r.rider_id = u.id);
 
-
 SELECT * FROM movr.users WHERE id =
 SOME (SELECT owner_id FROM movr.vehicles WHERE city  = 'paris');
-
-
-SELECT rider_id, AVG(revenue) FROM movr.rides GROUP BY rider_id
-HAVING AVG(revenue) > ALL (SELECT AVG(revenue) FROM movr.rides);
-
-SELECT ROUND(revenue,0) AS rounded, 
-CASE 
-    WHEN ROUND(revenue,0) % 2 = 0 THEN 'revenue is even number'
-    ELSE 'revenue is odd number'
-END AS Description
-FROM movr.rides;
-
-SELECT * FROM movr.vehicles AS v 
-FULL OUTER JOIN movr.users AS u 
-ON v.owner_id = u.id
-ORDER BY (
-    CASE
-        WHEN v.id IS NULL THEN u.id
-        ELSE v.id
-    END
-);
 
 SELECT v.*, COALESCE(r.revenue,0.00) AS revenue
 FROM movr.vehicles AS v LEFT OUTER JOIN movr.rides AS r
