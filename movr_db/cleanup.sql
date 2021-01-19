@@ -1,0 +1,2 @@
+USE defaultdb;
+DROP DATABASE IF EXISTS movr;
