@@ -91,3 +91,36 @@ GROUP BY u.id, u.name
 HAVING u.name LIKE '%a%' AND  ROUND(AVG(r.revenue),2) > 50
 ORDER BY AVG_Revenue ASC;
 
+
+SELECT u.* FROM movr.users AS u WHERE EXISTS
+(SELECT r.rider_id  FROM movr.rides AS r WHERE r.rider_id = u.id);
+
+
+SELECT * FROM movr.users WHERE id =
+SOME (SELECT owner_id FROM movr.vehicles WHERE city  = 'paris');
+
+
+SELECT rider_id, AVG(revenue) FROM movr.rides GROUP BY rider_id
+HAVING AVG(revenue) > ALL (SELECT AVG(revenue) FROM movr.rides);
+
+SELECT ROUND(revenue,0) AS rounded, 
+CASE 
+    WHEN ROUND(revenue,0) % 2 = 0 THEN 'revenue is even number'
+    ELSE 'revenue is odd number'
+END AS Description
+FROM movr.rides;
+
+SELECT * FROM movr.vehicles AS v 
+FULL OUTER JOIN movr.users AS u 
+ON v.owner_id = u.id
+ORDER BY (
+    CASE
+        WHEN v.id IS NULL THEN u.id
+        ELSE v.id
+    END
+);
+
+SELECT v.*, COALESCE(r.revenue) AS revenue
+FROM movr.vehicles AS v LEFT OUTER JOIN movr.rides AS r
+ON r.rider_id = v.id
+WHERE v.city = 'amsterdam';
